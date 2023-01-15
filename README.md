@@ -2,4 +2,6 @@
 ecommerce application in react-native
 
 
-![image](https://user-images.githubusercontent.com/30934250/212574126-2604e789-57cc-4e04-8847-a971bd3c9688.png| width=100)
+
+
+<img src="https://user-images.githubusercontent.com/30934250/212574231-f0c401ea-31b9-42e9-82a2-37c30d310e5c.png" width="200" height="400" />
