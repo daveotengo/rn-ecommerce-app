@@ -1,20 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,Button } from 'react-native';
-import {createStore,combineReducers} from 'redux';
+import { StyleSheet, Text, View,Button,LogBox ,YellowBox} from 'react-native';
+import {createStore,combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import productReducer from './store/reducers/products';
 import ShopNavigator from './navigation/ShopNavigator';
 //import AppLoading  from 'expo-app-loading';
 import * as Font from 'expo-font';
-import React, {useState,useEffect,useCallback} from 'react';
+import React, {useState,useEffect,useCallback,createRef} from 'react';
 import * as SplashScreen from 'expo-splash-screen';
+import cartReducer from './store/reducers/cart';
+import ordersReducer from './store/reducers/orders';
+import ShopDrawer from './navigation/ShopDrawer';
+//import { NavigationContainer } from '@react-navigation/native';
+import ReduxThunk from 'redux-thunk';
+import authReducer from './store/reducers/auth';
+import StartUpScreen from './screens/StartUpScreen';
+import NavigationContainerNavigator from './navigation/NavigationContainer';
 
 
 const rootReducer=combineReducers({
-  products: productReducer
+  products: productReducer,
+  cart: cartReducer,
+  orders: ordersReducer,
+  auth: authReducer,
 });
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer,applyMiddleware(ReduxThunk));
 
 const fetchFonts = () => {
 	return Font.loadAsync({
@@ -70,11 +81,27 @@ export default function App() {
   if (!appIsReady) {
     return null;
   }
+  const containerRef = createRef();
+  //ref={containerRef}
 
+  //LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+  //LogBox.ignoreAllLogs();//Ignore all log notifications
+  LogBox.ignoreLogs(['Sending...']);
+  LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
+  // YellowBox.ignoreWarnings([
+  //   // See: https://github.com/react-navigation/react-navigation/issues/7839
+  //   'Sending \`onAnimatedValueUpdate\` with no listeners registered.',
+  // ]);
+  
   return (
     <Provider store={store}>
     <View style={styles.container} onLayout={onLayoutRootView}>
-    <ShopNavigator /> 
+    <NavigationContainerNavigator />
+     {/* <ShopNavigator/>  */}
+   {/* <ShopDrawer />  */}
+
+   
+  
     </View>
      
   

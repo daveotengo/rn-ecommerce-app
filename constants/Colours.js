@@ -15,5 +15,7 @@ export default {
     steelblue: '#4682B4',
     lightgray: '#D3D3D3',
     darkgray: '#A9A9A9',
-    primaryColor: '#800000'
+    primaryColor: '#800000',
+    maroon: '#800000'
+
 }

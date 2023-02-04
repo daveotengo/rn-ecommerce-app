@@ -1,28 +1,34 @@
 
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Image, ScrollView } from 'react-native';
-import { useSelector } from 'react-redux';
-import Colors from '../../constants/Colours'
-
+import { useSelector, useDispatch } from 'react-redux';
+import Colors from '../../constants/Colours';
+import * as cartActions from '../../store/actions/cart';
 const ProductDetailScreen = props => {
     console.log("printing props ProductDetailScreen");
     console.log(props);
 
     const productId = props.route.params.productId;
-    const selectedProduct = useSelector(state => state.products.availableProducts.find(prod => prod.id = productId));
+    const selectedProduct = useSelector((state) => state.products.availableProducts.find(prod => prod.id === productId));
+    console.log("printing productId");
+    console.log(productId);
 
+    console.log("printing selectedProduct");
+    console.log(selectedProduct);
+
+    
     useEffect(() => {
         props.navigation.setOptions({
             title: selectedProduct.title,
-            headerStyle: {
-                backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : ''
-            },
+            // headerStyle: {
+            //     backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : 'white'
+            // },
 
             headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor,
 
         });
-    }, [])
-
+    }, [selectedProduct.title])
+    const dispatch = useDispatch();
 
     return (
         // <View style={styles.screen} >
@@ -35,13 +41,14 @@ const ProductDetailScreen = props => {
                 <Button
                     color={Colors.maroon}
                     title="Add to Cart"
-                    onPress={() => console.log("Hi")
-                        //dispatch(cartActions.addToCard(selectedProduct))
+                    onPress={
+                        //() => console.log(selectedProduct)
+                        () => {dispatch(cartActions.addToCart(selectedProduct))}
                     }
+
                 />
             </View>
             <Text style={styles.title}>{selectedProduct.title}</Text>
-
             <Text style={styles.price}>${selectedProduct.price}</Text>
             <Text style={styles.desc}>{selectedProduct.description}</Text>
         </ScrollView>
@@ -68,7 +75,7 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: 'open-sans-bold',
         fontSize: 20,
-       
+
         textAlign: 'center',
         marginVertical: 2
 
